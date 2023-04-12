@@ -1,48 +1,43 @@
-import java.util.ArrayList;
 class Solution {
-    public int[] solution(int[] lottos, int[] win_nums) {
-        int[] answer = {};
+public int[] solution(int[] lottos, int[] win_nums) {
+        int[] answer = new int[2];
+        int same_num = 0;
 
-        // lottos 를 list 에 담기
-        ArrayList<Integer> lotto_numbers = new ArrayList<>();
+        // 뽑은 값과 결과가 몇개가 같은지 구한다 -> 최소 일때
+        for (int i = 0; i < 6; i++) {
+            for (int j = 0; j < 6; j++) {
+                if (lottos[i] == win_nums[j]) {
+                    same_num++;
+                }
+            }
+        }
+        // 0의 개수를 구한다.
+        int max = 0;
         for (int i = 0; i < lottos.length; i++) {
-            lotto_numbers.add(lottos[i]);
+            if (lottos[i] == 0) {
+                max++;
+            }
         }
-
-        // win_numbers 를 list 에 담기
-        ArrayList<Integer> win_numbers = new ArrayList<>();
-        for (int i = 0; i < win_nums.length; i++) {
-            win_numbers.add(win_nums[i]);
-        }
-
-        int num_0 = 0;
-        for (int i = 0; i < 6; i++) {
-            if (lotto_numbers.get(i) == 0) num_0++;
-        }
-
-        int count = 0; // 일치하는 수 개수 찾기
-        for (int i = 0; i < 6; i++) {
-            if (win_numbers.contains(lotto_numbers.get(i)))
-                count++;
-        }
-
-        int max = num_0 + count;
-        int min = count;
-        if (max == 6) max = 1;
-        else if (max == 5) max = 2;
-        else if (max == 4) max = 3;
-        else if (max == 3) max = 4;
-        else if (max == 2) max = 5;
-        else max = 6;
-
-        if (min == 6) min = 1;
-        else if (min == 5) min = 2;
-        else if (min == 4) min = 3;
-        else if (min == 3) min = 4;
-        else if (min == 2) min = 5;
-        else min = 6;
-
-        answer = new int[]{max, min};
+        max = same_num + max; // 최대일때
+        answer[0] = getGrade(max);
+        answer[1] = getGrade(same_num);
         return answer;
+    }
+
+    public int getGrade(int n) {
+        switch (n) {
+            case 6:
+                return 1;
+            case 5:
+                return 2;
+            case 4:
+                return 3;
+            case 3:
+                return 4;
+            case 2:
+                return 5;
+            default:
+                return 6;
+        }
     }
 }
