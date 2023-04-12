@@ -1,18 +1,19 @@
+
 import java.util.ArrayList;
 import java.util.Collections;
-
 class Solution {
     public String[] solution(String[] strings, int n) {
         String[] answer = {};
-        ArrayList<String> arr = new ArrayList<>();
+        ArrayList<String> list = new ArrayList<>();
         for (int i = 0; i < strings.length; i++) {
-            arr.add(strings[i].charAt(n) + strings[i]);
+            list.add(strings[i].charAt(n) + strings[i]); // usun, ebed, acar
         }
-        Collections.sort(arr);
-        answer = new String[arr.size()];
-        for (int i = 0; i < arr.size(); i++) {
-            answer[i] = arr.get(i).substring(1, arr.get(i).length());
+        Collections.sort(list);
+        answer = new String[list.size()];
+        for (int i = 0; i < strings.length; i++) {
+            answer[i] = list.get(i).substring(1);
         }
+
         return answer;
     }
 }
