@@ -3,6 +3,10 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.*;
 
+/**
+ * DFS = stack
+ * BFS = queue
+ */
 public class Main {
     boolean[] visited;
     static int[][] arr;
@@ -11,6 +15,8 @@ public class Main {
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine(), " ");
+        StringBuilder bfs = new StringBuilder();
+        StringBuilder dfs = new StringBuilder();
 
         N = Integer.parseInt(st.nextToken());
         M = Integer.parseInt(st.nextToken());
@@ -52,21 +58,20 @@ public class Main {
         Stack<Integer> stack = new Stack<>();
         Queue<Integer> queue = new LinkedList<>();
 
-        ArrayList<Integer> dfs_result = new ArrayList<>();
-        ArrayList<Integer> bfs_result = new ArrayList<>();
-
         stack.push(V);
 
         while (!stack.isEmpty()) {
             Integer firstStack = stack.pop();
             if (!visited[firstStack]) {
                 visited[firstStack] = true;
-                dfs_result.add(firstStack);
+                dfs.append(firstStack).append(" ");
+
                 ArrayList<Integer> stacks = newArr[firstStack];
 
                 if (stacks == null) {
                     continue;
                 }
+                // 정점 번호가 작은 것을 먼저 방문
                 stacks.sort(Collections.reverseOrder());
 
                 for (int i = 0; i < stacks.size(); i++) {
@@ -76,15 +81,7 @@ public class Main {
             }
         }
 
-//        System.out.println("dfs_result = " + dfs_result);
-//        System.out.println(dfs_result);
-        for (int i = 0; i < dfs_result.size(); i++) {
-            System.out.print(dfs_result.get(i));
-            if (i < dfs_result.size() - 1) {
-                System.out.print(" ");
-            }
-        }
-        System.out.println();
+        System.out.println(dfs);
 
         visited = new boolean[N + 1];
         queue.add(V);
@@ -92,12 +89,13 @@ public class Main {
             Integer firstQueue = queue.poll();
             if (!visited[firstQueue]) {
                 visited[firstQueue] = true;
-                bfs_result.add(firstQueue);
+                bfs.append(firstQueue).append(" ");
                 ArrayList<Integer> queues = newArr[firstQueue];
 
                 if (queues == null) {
                     continue;
                 }
+                // 정점 번호가 작은 것을 먼저 방문하도록 정렬
                 Collections.sort(queues);
 
                 for (int i = 0; i < queues.size(); i++) {
@@ -106,13 +104,6 @@ public class Main {
                 }
             }
         }
-//        System.out.println("bfs_result = " + bfs_result);
-//        System.out.println(bfs_result);
-        for (int i = 0; i < bfs_result.size(); i++) {
-            System.out.print(bfs_result.get(i));
-            if (i < bfs_result.size() - 1) {
-                System.out.print(" ");
-            }
-        }
+        System.out.println(bfs);
     }
 }
