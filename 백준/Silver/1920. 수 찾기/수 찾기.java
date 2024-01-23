@@ -2,43 +2,65 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.StringTokenizer;
 
 public class Main {
+    public static int[] nums;
     public static void main(String[] args) throws IOException {
+
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer st = new StringTokenizer(br.readLine());
         StringBuilder sb = new StringBuilder();
 
-        Map<Integer, Integer> map = new HashMap<>();
+        int n = Integer.parseInt(br.readLine());
+        nums = new int[n];
 
-        int n = Integer.parseInt(st.nextToken());
-        int[] nums = new int[n];
-        st = new StringTokenizer(br.readLine());
+        StringTokenizer st = new StringTokenizer(br.readLine(), " ");
         for (int i = 0; i < n; i++) {
             nums[i] = Integer.parseInt(st.nextToken());
-            map.put(nums[i], map.getOrDefault(nums[i], 0) + 1);
         }
 
-//        System.out.println("nums = " + Arrays.toString(nums));
+        Arrays.sort(nums);
 
-        st = new StringTokenizer(br.readLine());
-        int m = Integer.parseInt(st.nextToken());
-        int[] findNums = new int[m];
+        int m = Integer.parseInt(br.readLine());
+        st = new StringTokenizer(br.readLine(), " ");
 
-        st = new StringTokenizer(br.readLine());
         for (int i = 0; i < m; i++) {
-            findNums[i] = Integer.parseInt(st.nextToken());
-            if (map.containsKey(findNums[i])) {
-                sb.append(1).append("\n");
+
+            if (binarySearch(Integer.parseInt(st.nextToken())) >= 0) {
+                sb.append(1).append('\n');
             } else {
-                sb.append(0).append("\n");
+                sb.append(0).append('\n');
             }
         }
-//        System.out.println("findNums = " + Arrays.toString(findNums));
-
         System.out.println(sb);
+    }
+
+    public static int binarySearch(int key) {
+
+        int lo = 0;                    // 탐색 범위의 왼쪽 끝 인덱스
+        int hi = nums.length - 1;    // 탐색 범위의 오른쪽 끝 인덱스
+
+        // lo가 hi보다 커지기 전까지 반복한다.
+        while (lo <= hi) {
+
+            int mid = (lo + hi) / 2;    // 중간위치를 구한다.
+
+            // key값이 중간 위치의 값보다 작을 경우
+            if (key < nums[mid]) {
+                hi = mid - 1;
+            }
+            // key값이 중간 위치의 값보다 클 경우
+            else if (key > nums[mid]) {
+                lo = mid + 1;
+            }
+            // key값과 중간 위치의 값이 같을 경우
+            else {
+                return mid;
+            }
+        }
+
+        // 찾고자 하는 값이 존재하지 않을 경우
+        return -1;
+
     }
 }
